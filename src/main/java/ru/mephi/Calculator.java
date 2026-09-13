@@ -1,6 +1,5 @@
 package ru.mephi;
 
-
 import java.util.Scanner;
 
 public class Calculator {
