@@ -2,35 +2,24 @@ package ru.mephi;
 
 import java.util.Scanner;
 
+import static ru.mephi.Constants.LINE;
+
 public class Calculator {
-    static final String LINE = "------------------------------";
+    private double result;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        double result = 0;
-        String operation;
-
-        System.out.println("Калькулятор запущен");
-        result = readNumber(sc);
-        while (true) {
-            operation = readOperation(sc);
-            if (operation.equals("s")) {
-                System.out.println("До свидания!\n" + LINE);
-                break;
-            } else if (operation.equals("c")) {
-                System.out.println("Результат сброшен.\nРезультат = 0");
-                result = readNumber(sc);
-                continue;
-            }
-
-            double calNum = readNumber(sc);
-            result = calculate(result, calNum, operation);
-            System.out.printf(LINE + "\nВаш результат: %.2f%n", result);
-
-        }
+    public double getResult() {
+        return this.result;
     }
 
-    public static double readNumber(Scanner sc) {
+    public void setResult(double value) {
+        this.result = value;
+    }
+
+    public void reset() {
+        this.result = 0;
+    }
+
+    public double readNumber(Scanner sc) {
         while (true) {
             try {
                 System.out.print(LINE + "\nВведите число: ");
@@ -42,7 +31,7 @@ public class Calculator {
         }
     }
 
-    public static String readOperation(Scanner sc) {
+    public String readOperation(Scanner sc) {
         while (true) {
             String choice;
             System.out.print(LINE + "\nВведите операцию:\n+ - Сложение \n- - Вычитание \n* - Умножение " +
@@ -55,31 +44,30 @@ public class Calculator {
                 System.out.println("Данная операция не предусмотрена");
             }
         }
+
     }
 
-    public static double calculate(double num1, double num2, String operation) {
-        double result = num1;
+    public void calculate(double num2, String operation) {
 
         switch (operation) {
             case "+":
-                result = num1 + num2;
+                this.result = this.result + num2;
                 break;
             case "-":
-                result = num1 - num2;
+                this.result = this.result - num2;
                 break;
             case "*":
-                result = num1 * num2;
+                this.result = this.result * num2;
                 break;
             case "/":
                 if (num2 == 0) {
                     System.out.println("На ноль делить нельзя!");
-                    result = num1;
                 } else {
-                    result = num1 / num2;
+                    this.result = this.result / num2;
                 }
                 break;
         }
-        return result;
     }
+
 
 }
