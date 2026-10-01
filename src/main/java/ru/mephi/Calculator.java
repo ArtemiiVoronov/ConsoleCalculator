@@ -2,10 +2,19 @@ package ru.mephi;
 
 import java.util.Scanner;
 
-import static ru.mephi.Constants.LINE;
+import static ru.mephi.Constants.*;
 
 public class Calculator {
     private double result;
+
+    public Calculator() {
+        this.result = 0;
+    }
+
+
+    public Calculator(double initialValue) {
+        this.result = initialValue;
+    }
 
     public double getResult() {
         return this.result;
@@ -21,9 +30,14 @@ public class Calculator {
 
     public double readNumber(Scanner sc) {
         while (true) {
+            System.out.printf("%s\n%s", LINE, MSG_ENTER_NUMBER);
+            String input = sc.nextLine().trim();
+
+            if (input.contains(",")) {
+                System.out.println("Ошибка: используйте точку вместо запятой!");
+                continue;
+            }
             try {
-                System.out.print(LINE + "\nВведите число: ");
-                String input = sc.nextLine().trim().replace(',', '.');
                 return Double.parseDouble(input);
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введено не число!");
@@ -34,11 +48,10 @@ public class Calculator {
     public String readOperation(Scanner sc) {
         while (true) {
             String choice;
-            System.out.print(LINE + "\nВведите операцию:\n+ - Сложение \n- - Вычитание \n* - Умножение " +
-                    "\n/ - Деление\nC - для сброса результата\nS - для выхода\n" + LINE + "\nПоле ввода:");
+            System.out.printf("%s\n%s\nПоле ввода: ", LINE, MSG_OPERATION_MENU);
             choice = sc.nextLine().trim().toLowerCase();
             if (choice.equals("+") || choice.equals("-") || choice.equals("*") || choice.equals("/")
-                    || choice.equals("s") || choice.equals("c")) {
+                    || choice.equals("s") || choice.equals("c") || choice.equals("r")) {
                 return choice;
             } else {
                 System.out.println("Данная операция не предусмотрена");
