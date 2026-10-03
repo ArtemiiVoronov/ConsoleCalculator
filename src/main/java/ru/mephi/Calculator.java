@@ -1,20 +1,16 @@
 package ru.mephi;
 
-import java.util.Scanner;
-
-import static ru.mephi.Constants.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Calculator {
     private double result;
+    private static final Logger logger = LoggerFactory.getLogger(Calculator.class);
 
     public Calculator() {
         this.result = 0;
     }
 
-
-    public Calculator(double initialValue) {
-        this.result = initialValue;
-    }
 
     public double getResult() {
         return this.result;
@@ -28,58 +24,33 @@ public class Calculator {
         this.result = 0;
     }
 
-    public double readNumber(Scanner sc) {
-        while (true) {
-            System.out.printf("%s\n%s", LINE, MSG_ENTER_NUMBER);
-            String input = sc.nextLine().trim();
 
-            if (input.contains(",")) {
-                System.out.println("Ошибка: используйте точку вместо запятой!");
-                continue;
-            }
-            try {
-                return Double.parseDouble(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: введено не число!");
-            }
-        }
-    }
-
-    public String readOperation(Scanner sc) {
-        while (true) {
-            String choice;
-            System.out.printf("%s\n%s\nПоле ввода: ", LINE, MSG_OPERATION_MENU);
-            choice = sc.nextLine().trim().toLowerCase();
-            if (choice.equals("+") || choice.equals("-") || choice.equals("*") || choice.equals("/")
-                    || choice.equals("s") || choice.equals("c") || choice.equals("r")) {
-                return choice;
-            } else {
-                System.out.println("Данная операция не предусмотрена");
-            }
-        }
-
-    }
-
-    public void calculate(double num2, String operation) {
+    public void calculate(double operand, Operation operation) {
 
         switch (operation) {
-            case "+":
-                this.result = this.result + num2;
+            case ADD:
+                this.result += operand;
                 break;
-            case "-":
-                this.result = this.result - num2;
+            case SUBTRACT:
+                this.result -= operand;
                 break;
-            case "*":
-                this.result = this.result * num2;
+            case MULTIPLY:
+                this.result *= operand;
                 break;
-            case "/":
-                if (num2 == 0) {
+            case DIVIDE:
+                if (operand == 0) {
+                    logger.warn("Попытка деления на ноль");
                     System.out.println("На ноль делить нельзя!");
                 } else {
-                    this.result = this.result / num2;
+                    this.result /= operand;
                 }
                 break;
+            default:
+                logger.warn("Неизвестная операция: {}", operation);
+                System.out.println("Неизвестная операция");
+                break;
         }
+        logger.info("Операция выполнена: {} {} = {}", operation, operand, this.result);
     }
 
 
